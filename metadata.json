@@ -1,0 +1,6 @@
+{
+  "name": "AI 數據分析與洞察工具",
+  "description": "貼上 CSV 資料，由 AI 自動進行多維度數據分析與洞察，並提供專業圖表建議與關鍵發現",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
