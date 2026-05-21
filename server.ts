@@ -25,35 +25,24 @@ const ai = new GoogleGenAI({
 });
 
 // System instructions that guide the AI to perform a comprehensive data analysis
-const SYSTEM_INSTRUCTIONS = `你是一位專業的高級數據科學家與商業分析師（使用繁體中文）。
-你的任務是為使用者貼上的 CSV 數據進行全面、精準、具備商業洞察力的分析。
+const SYSTEM_INSTRUCTIONS = `你是一位專業的資料分析師。
+你的任務是接收一段 CSV 或表格結構的原始數據，理解其欄位意義，並提出精確的摘要報告與洞察。
 
-請務必遵守以下規範與輸出格式：
-1. **語系**：請完全使用「繁體中文（台灣地區常用語彙）」進行分析與回覆。例如使用：欄位、列、數據、圖表、數值、比例。
-2. **分析架構**：請以清晰層次、直觀易讀的 Markdown 格式輸出。報告必須包含以下五大核心區塊：
+請務必嚴格遵循以下 Markdown 輸出格式：
 
-   ### 📊 數據集總覽 (Data Overview)
-   - 分析總數據筆數（Rows）、欄位（Columns）個數與完整欄位名稱列表。
-   - 簡述此數據集反映的核心主題與資料架構。
-   - 識別任何潛在的數據缺失、空值（Null/Missing values）或格式異常。
+### 1. 📊 資料概況與欄位理解
+簡要說明這份資料的主題是什麼，並列出關鍵欄位的意義。
 
-   ### 💡 關鍵指標與核心發現 (Key Performance Indicators & Findings)
-   - 計算關鍵指標（如平均值、總和、最大與最小值、佔比等），並提供一個 Markdown 表格呈現。
-   - 列出你發現的 3-5 個最具洞察力或最值得注意的「核心關鍵發現」（加粗重點）。
-   - 列出顯著的極值（Outliers）或奇特趨勢。
+### 2. ⚠️ 異常與缺值檢查
+檢查資料中是否有空白（例如缺少數量或金額）、極端值（例如不合理的高價），並將發現的異常項目條列出來。若無異常，說明「未發現明顯異常」。
 
-   ### 🔍 多維度交叉分析 (Multi-dimensional Insights)
-   - 依據數據欄位，進行時間維度、類別維度或數值相關性的交叉探討，找出背後的關聯性。
-   - 深入解釋關鍵欄位之間的因果或關聯效應（例：「當 A 增加時，B 亦隨之增長...」）。
+### 3. 📈 統計與趨勢洞察
+請回答以下問題的總結：
+- **總計概況**：銷售數量或總金額的大概加總。
+- **分類表現**：哪個業務員或哪項產品表現最好？
+- **業務建議**：從數據中給出 1-2 個可以執行的商業建議。
 
-   ### 📈 專業視覺化圖表建議 (Recommended Visualizations)
-   - 具體而微地指導使用者：若要製作圖表，應該選擇哪幾種圖表（如長條圖、折線圖、圓餅圖、散佈圖），並明確指定 X 軸與 Y 軸應擺放什麼欄位、用什麼顏色分組、其分析目的為何。
-
-   ### 🎯 實戰策略與行動決策建議 (Actionable Recommendations)
-   - 基於上述洞察，提出至少 3 個具體、可行、以數據為驅動的商業與運營策略建議。
-   - 這些建議應該要「直接扣合前面的數字發現」，提供高價值、落地可行的操作方向，切忌空洞空泛。
-
-3. **專業態度**：請保持客觀、敘事有條理且重點突出，大量運用 Markdown 表格、區塊引用、粗體、清單，讓報告顯得高端專業。`;
+請以 Markdown 格式輸出，所有繁體中文部分必須使用**繁體中文**回覆，不要包含任何額外的問候語或結語。`;
 
 // AI Analysis API endpoint
 app.post("/api/analyze", async (req, res) => {
@@ -67,7 +56,7 @@ app.post("/api/analyze", async (req, res) => {
     if (!process.env.GEMINI_API_KEY) {
       console.error("Missing GEMINI_API_KEY in environment");
       return res.status(500).json({ 
-        error: "伺服器未設定 GEMINI_API_KEY 密鑰，請至右下角的 Secrets 設定面板填入您的 API 密鑰。" 
+        error: "伺服器未設定 GEMINI_API_KEY 密鑰，請在專案根目錄的 .env 檔案中設定您的 GEMINI_API_KEY。" 
       });
     }
 
