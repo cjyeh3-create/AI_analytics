@@ -47,14 +47,9 @@ export default async (req: Request) => {
       });
     }
 
-    // Initialize Google Gen AI client with AI Studio credentials and custom user-agent
+    // Initialize Google Gen AI client
     const ai = new GoogleGenAI({
       apiKey: geminiApiKey,
-      httpOptions: {
-        headers: {
-          'User-Agent': 'aistudio-build',
-        }
-      }
     });
 
     const userInstructions = promptOverride && promptOverride.trim() !== ""
